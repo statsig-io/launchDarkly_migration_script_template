@@ -4,8 +4,9 @@ This script is designed to help automate some of the migration of feature flags 
 
 ## Considerations
 
-This script should work out of the box. I'd suggesting testing on an environment of 5-10 flags. However, before running the script on a large scale, consider the following:
+This script should work out of the box. I'd suggesting getting started with a test environment of 5-10 flags. However, before running the script on a large scale, consider the following:
 
+- __IMPORTANT__: If you don't want/need to customize this import script, you may consider using [Statsig's built in LaunchDarkly migration tool](https://docs.statsig.com/guides/migrate-from-launchdarkly).
 - The script migrates boolean flags from LaunchDarkly. Non-boolean flags require manual migration.
 - The script uses a tag (`Migration Script`) to identify migrated flags in Statsig. Ensure this tag is unique and recognizable.
 - The script includes a function to delete all Statsig feature gates with a specific tag. Use this with caution to clean up after a test or failed migration.
