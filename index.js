@@ -23,7 +23,7 @@ const LAUNCHDARKLY_PROJECT_KEY = "default";
 const STATSIG_API_KEY = "XXXXXXXXXX";
 //This should match the LaunchDarkly environment 
 // i.e. "production" => https://app.launchdarkly.com/default/production/features/test-feature-flag
-const STATSIG_ENVIRONMENT = "production";
+const LAUNCHDARKLY_ENVIRONMENT = "production";
 const TAG_NAME = 'Migration Script';
 
 // API endpoints
@@ -69,7 +69,7 @@ function escapeRegex(str) {
 // Fetch LaunchDarkly flags
 async function fetchLaunchDarklyFlags() {
     try {
-        const response = await axios.get(`${LD_API_BASE_URL}/api/v2/flags/${LAUNCHDARKLY_PROJECT_KEY}?env=${STATSIG_ENVIRONMENT}`, ldHeaders);
+        const response = await axios.get(`${LD_API_BASE_URL}/api/v2/flags/${LAUNCHDARKLY_PROJECT_KEY}?env=${LAUNCHDARKLY_ENVIRONMENT}`, ldHeaders);
         console.log('Fetched LaunchDarkly flags successfully.');
         return response.data.items;
     } catch (error) {
@@ -205,7 +205,7 @@ function translateLDFlagToStatsig(flag) {
         description: flag.description,
         type: isFlagTemporary,
         // Default enabled state and rules will be added here
-        enabled: flag.environments[STATSIG_ENVIRONMENT].on,
+        enabled: flag.environments[LAUNCHDARKLY_ENVIRONMENT].on,
         rules: [],
         tags: [TAG_NAME]
     };
@@ -215,7 +215,7 @@ function translateLDFlagToStatsig(flag) {
         return false;
     } else {
         // For each targeting rule in LaunchDarkly, create a corresponding rule in Statsig
-        flag.environments[STATSIG_ENVIRONMENT].rules.forEach(ldRule => {
+        flag.environments[LAUNCHDARKLY_ENVIRONMENT].rules.forEach(ldRule => {
             const statsigRule = translateLaunchDarklyRule(ldRule, flag.variations);
             statsigFeatureFlag.rules.push(statsigRule);
         });
@@ -344,7 +344,7 @@ async function migrateFeatureFlags() {
             CSV_OUTPUT_ROW.ld_flag_key = detailedFlag.key;
             let  ld_creation_date = new Date(Number(detailedFlag.creationDate));
             CSV_OUTPUT_ROW.ld_creation_date = ld_creation_date.toLocaleString();
-            CSV_OUTPUT_ROW.ld_url = "https://app.launchdarkly.com/default/"+STATSIG_ENVIRONMENT+"/features/"+detailedFlag.key;
+            CSV_OUTPUT_ROW.ld_url = "https://app.launchdarkly.com/default/"+LAUNCHDARKLY_ENVIRONMENT+"/features/"+detailedFlag.key;
 
             const statsigFeatureFlag = translateLDFlagToStatsig(detailedFlag);
 
