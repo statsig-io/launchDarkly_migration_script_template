@@ -14,6 +14,7 @@ This script should work out of the box. I'd suggesting testing on an environment
 - The script calculates the pass percentage for Statsig rules based on LaunchDarkly's rollout weights or variation settings.
 - The script requires API keys for both LaunchDarkly and Statsig, which should be kept secure.
 - __Environments__: In Statsig, the hierarchy is designed with a single project that contains multiple environments, such as Development, Staging, and Production. Conversely, LaunchDarkly adopts an Environment > Project hierarchy, where each environment can be considered a separate project with its own set of feature flags. Adjust the environment logic in this script accordingly. (Open to feedback/pull requests on how to better handle this.)
+- __Defaults__: Currently, Statsig feature gates will always default to false. No default rules will be migrated from LaunchDarkly in the current iteration of this script. 
 
 ## Installation
 
@@ -49,6 +50,24 @@ The script will perform the following actions:
 3. Create feature gates in Statsig.
 4. Write the migration status and details to a CSV file named `flag_migration_tracker.csv`.
 
+## Example Translations
+
+This LaunchDarkly feature flag:
+
+![Untitled](https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/6ae5f8fd-a1d0-4b2e-9d55-a69122e73532)
+
+Would be translated to this Statsig feature gate:
+
+<img width="937" alt="Untitled" src="https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/92e92a1c-bf55-48c6-9074-0cf4da273bd1">
+
+And this LaunchDarkly feature flag:
+
+![Untitled](https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/f60c1331-cca4-4688-ab0d-f01515a791a0)
+
+Would be translated to this Statsig feature gate:
+
+<img width="938" alt="Untitled" src="https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/3cf59ecb-6e8f-4eb7-806e-e369236134f1">
+
 ## Output
 
 The script outputs a CSV file with the following columns:
@@ -62,6 +81,8 @@ The script outputs a CSV file with the following columns:
 - `statsig_id`: The ID of the gate in Statsig.
 - `ld_creation_date`: The creation date of the flag in LaunchDarkly.
 - `statsig_created_time`: The creation time of the gate in Statsig.
+
+<img width="953" alt="Untitled" src="https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/24232bf3-f853-4684-a9ce-6d7a0d98aed6">
 
 You can use this to help track the migration and easily reference URLs of gates in either platform and their migration status.
 
