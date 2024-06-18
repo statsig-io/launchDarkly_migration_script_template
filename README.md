@@ -14,7 +14,8 @@ This script should work out of the box. I'd suggesting getting started with a te
 - The script maps LaunchDarkly attributes to Statsig condition types. Customize the `mapType` function to match your attributes.
 - The script calculates the pass percentage for Statsig rules based on LaunchDarkly's rollout weights or variation settings.
 - The script requires API keys for both LaunchDarkly and Statsig, which should be kept secure.
-- __Environments__: In Statsig, the hierarchy is designed with a single project that contains multiple environments, such as Development, Staging, and Production. Conversely, LaunchDarkly adopts an Environment > Project hierarchy, where each environment can be considered a separate project with its own set of feature flags. Adjust the environment logic in this script accordingly. (Open to feedback/pull requests on how to better handle this.)
+- __Environments__: In Statsig, the hierarchy is designed with a single project that contains multiple environments, such as Development, Staging, and Production. Conversely, LaunchDarkly adopts an Environment > Project hierarchy, where each environment can be considered a separate project with its own set of feature flags. Adjust the environment logic in this script accordingly. (Open to feedback/pull requests on how to better handle this.) Here's an example of a flag which is only on in development, which was imported using the current migration script: ![Untitled-1](https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/0368679e-d3b1-4370-94c3-2637c71b961f)
+
 - __Defaults__: Currently, Statsig feature gates will always default to false. No default rules will be migrated from LaunchDarkly in the current iteration of this script. 
 
 ## Installation
