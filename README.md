@@ -7,6 +7,7 @@ This script is designed to help automate some of the migration of feature flags 
 This script should work out of the box. I'd suggesting getting started with a test environment of 5-10 flags. However, before running the script on a large scale, consider the following:
 
 - __IMPORTANT__: If you don't want/need to customize this import script, you may consider using [Statsig's built in LaunchDarkly migration tool](https://docs.statsig.com/guides/migrate-from-launchdarkly).
+- Depending on the number of flags you're looking to migrate, you may run into rate limiting issues. You'll need to rate limit accordingly. We will be adding rate limiting into the script soon.
 - The script migrates boolean flags from LaunchDarkly. Non-boolean flags require manual migration.
 - The script uses a tag (`Migration Script`) to identify migrated flags in Statsig. Ensure this tag is unique and recognizable.
 - The script includes a function to delete all Statsig feature gates with a specific tag. Use this with caution to clean up after a test or failed migration.
@@ -15,8 +16,6 @@ This script should work out of the box. I'd suggesting getting started with a te
 - The script calculates the pass percentage for Statsig rules based on LaunchDarkly's rollout weights or variation settings.
 - The script requires API keys for both LaunchDarkly and Statsig, which should be kept secure.
 - __Environments__: In Statsig, the hierarchy is designed with a single project that contains multiple environments, such as Development, Staging, and Production. Conversely, LaunchDarkly adopts an Environment > Project hierarchy, where each environment can be considered a separate project with its own set of feature flags. Adjust the environment logic in this script accordingly. (Open to feedback/pull requests on how to better handle this.) Here's an example of a flag which is only on in development, which was imported using the current migration script: ![Untitled-1](https://github.com/statsig-io/launchDarkly_migration_script_template/assets/5475308/0368679e-d3b1-4370-94c3-2637c71b961f)
-
-- __Defaults__: Currently, Statsig feature gates will always default to false. No default rules will be migrated from LaunchDarkly in the current iteration of this script. 
 
 ## Installation
 
