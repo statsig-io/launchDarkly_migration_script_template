@@ -10,6 +10,7 @@ This script should work out of the box. I'd suggesting getting started with a te
 - Depending on the number of flags you're looking to migrate, you may run into rate limiting issues. You'll need to rate limit accordingly. We will be adding rate limiting into the script soon.
 - The script migrates boolean flags from LaunchDarkly. Non-boolean flags require manual migration.
 - The script uses a tag (`Migration Script`) to identify migrated flags in Statsig. Ensure this tag is unique and recognizable.
+- The script adds a tag to each flag in the format of `ld-project:xxxxxxx` to help identify where flags came from once they are imported into StatSig.
 - The script includes a function to delete all Statsig feature gates with a specific tag. Use this with caution to clean up after a test or failed migration.
 - The script maps LaunchDarkly operators to Statsig operators. Review and adjust the `mapOperator` function to ensure correct mapping.
 - The script maps LaunchDarkly attributes to Statsig condition types. Customize the `mapType` function to match your attributes.
@@ -21,34 +22,30 @@ This script should work out of the box. I'd suggesting getting started with a te
 
 To run the script, you need Node.js and npm installed on your system. Follow these steps to set up the script:
 
-1. Clone or download the script to your local machine.
+1. Clone the script to your local machine.
 2. Navigate to the script's directory in your terminal.
-3. Run `npm install` to install the required dependencies, including `axios` for HTTP requests and `csv-writer` for CSV file operations.
+3. Run `npm install` to install the required dependencies.
 
 ## Configuration
 
-Before running the script, you must set up the following environment variables:
+Before running the script, you must set up the following environment variables, or create a `.env` file with these values:
 
 - `LAUNCHDARKLY_API_KEY`: Your LaunchDarkly API key.
-- `LAUNCHDARKLY_PROJECT_KEY`: The project key in LaunchDarkly (default is "default").
-- `LAUNCHDARKLY_ENVIRONMENT`: The LaunchDarkly environment from which which you want to migrate the flags (e.g., "production").
 - `STATSIG_API_KEY`: Your Statsig console API key.
-
-Replace the placeholder values (`"XXXXXXXX"`) with your actual API keys.
 
 ## Running the Script
 
 To execute the migration script, run the following command in your terminal:
 
 ```bash
-node index.js
+node index.mjs <ld-project-keys...>
 ```
 
 The script will perform the following actions:
 
-1. Fetch all feature flags from LaunchDarkly.
+1. Fetch all feature flags from LaunchDarkly for each provided project key.
 2. Translate each flag into Statsig's format.
-3. Create feature gates in Statsig.
+3. Create feature gates in Statsig in the project associated with your console API key.
 4. Write the migration status and details to a CSV file named `flag_migration_tracker.csv`.
 
 ## Example Translations
@@ -75,6 +72,7 @@ The script outputs a CSV file with the following columns:
 
 - `migration_status`: The status of the migration for each flag.
 - `ld_flag_name`: The name of the flag in LaunchDarkly.
+- `ld_project`: The name of the project the feature flag came from in LaunchDarkly
 - `statsig_gate_name`: The name of the gate in Statsig.
 - `ld_url`: The URL to the flag in LaunchDarkly.
 - `statsig_url`: The URL to the gate in Statsig.
