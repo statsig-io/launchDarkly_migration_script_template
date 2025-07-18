@@ -1,4 +1,8 @@
-# LaunchDarkly => Statsig Migration Script Template
+# ⚠️ THIS PACKAGE IS DEPRECATED️ ⚠️
+
+__Use the new migrations package at https://github.com/statsig-io/migrations/__.
+
+# [DEPRECATED] LaunchDarkly => Statsig Migration Script Template
 
 This script is designed to help automate some of the migration of feature flags from LaunchDarkly to Statsig. It fetches feature flags from LaunchDarkly, translates them into Statsig's format, and creates corresponding feature gates in Statsig. Additionally, it tracks the migration status and details in a CSV file.
 
